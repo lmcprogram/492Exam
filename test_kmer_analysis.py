@@ -6,6 +6,8 @@ import pytest
 from kmer_analysis import read_fasta, extract_kmers, count_frequencies, write_output
 
 
+#Testing of the input function
+
 def test_read_fasta():
     # Setup
     content = ">header\nACTG\nCGA\n"
@@ -22,6 +24,10 @@ def test_read_fasta():
     # Verify
     assert sequence == "ACTGCGA"
 
+
+
+#Testing of the kmer extraction function
+
 def test_extract_kmers_normal_input():
     sequence = "ATGCGA"
     k = 2
@@ -34,11 +40,39 @@ def test_extract_kmers_normal_input():
     result = extract_kmers(sequence, k)
     assert result == expected
 
+def test_extract_kmers_k_equals_1():
+    sequence = "ACGT"
+    k = 1
+    expected = {
+        "A": ["C"],
+        "C": ["G"],
+        "G": ["T"]
+    }
+    result = extract_kmers(sequence, k)
+    assert result == expected
+
 def test_extract_kmers_edge_too_short():
     sequence = "AT"
     k = 3
     result = extract_kmers(sequence, k)
     assert result == {}  # should have no k-mers if k > len(sequence)
+
+def test_extract_kmers_overlap():
+    sequence = "AAAAA"
+    k = 2
+    expected = {
+        "AA": ["A", "A", "A"]
+    }
+    result = extract_kmers(sequence, k)
+    assert result == expected
+
+
+#Testing of the frequency counting function
+
+def test_count_frequencies_empty_input():
+    result = count_frequencies({})
+    assert result == {}
+
 
 def test_count_kmer_frequencies_typical():
     kmer_contexts = {
@@ -52,6 +86,17 @@ def test_count_kmer_frequencies_typical():
     result = count_frequencies(kmer_contexts)
     assert result == expected
 
+def test_count_frequencies_single_kmer():
+    input_data = {
+        "GG": ["C"]
+    }
+    expected = {
+        "GG": (1, {"C": 1})
+    }
+    assert count_frequencies(input_data) == expected
+
+
+# test output function
 
 def test_write_output(tmp_path):
     # Setup data
@@ -72,3 +117,4 @@ def test_write_output(tmp_path):
     with open(output_file, 'r') as f:
         lines = set(f.readlines())
         assert lines == expected_lines
+
