@@ -10,7 +10,7 @@ def read_fasta(filename: str):
             if not line or line.startswith('>'):
                 continue  # Skip empty lines and headers
             dna_sequence.append(line.upper())
-    return ''.join(dna_sequence)
+    return ''.join(dna_sequence) #string
 
 
 def extract_kmers(sequence: str, k: int):
@@ -19,7 +19,22 @@ def extract_kmers(sequence: str, k: int):
         kmer = sequence[i:i + k]
         next_char = sequence[i + k]
         kmers[kmer].append(next_char)
-    return kmers # Dict[str, List[str]]
+    return kmers # return format: Dict[str, List[str]]
+
+def count_kmer_frequencies(kmer_contexts: Dict[str, List[str]]):
+    result = {}
+    for kmer, follows in kmer_contexts.items():
+        total = len(follows)
+        follow_counts = {}
+        for char in follows:
+            if char in follow_counts:
+                follow_counts[char] += 1
+            else:
+                follow_counts[char] = 1
+        result[kmer] = (total, follow_counts)
+
+    #print(result)
+    return result  #return format: Dict[str, Tuple[int, Dict[str, int]]]
 
 def main():
     if len(sys.argv) != 4:
@@ -35,6 +50,8 @@ def main():
         sys.exit(1)
 
     sequence = read_fasta(input_file)
+    kmer_contexts = extract_kmers(sequence, k)
+    kmer_counts = count_kmer_frequencies(kmer_contexts)
 
 if __name__ == "__main__":
     main()
