@@ -54,13 +54,16 @@ def main():
     input_file = sys.argv[1]
     output_file = sys.argv[2]
     k = sys.argv[3]
-    if not isinstance(k, int):
-        print("Error: k must be an integer greater than 0")
+    try:
+        k = int(sys.argv[3])
+    except ValueError:
+        print("Error: k must be an integer.")
         sys.exit(1)
+
     if k <= 0:
         print("Error: k must be an integer greater than 0")
         sys.exit(1)
-    k = int(k)
+
     
     sequence = read_fasta(input_file)
     kmer_contexts = extract_kmers(sequence, k)
