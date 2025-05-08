@@ -25,6 +25,26 @@ def test_read_fasta():
     assert sequence == "ACTGCGA"
 
 
+def test_read_fasta_lowercase():
+    content = "acgt\ntgca\n"
+    with tempfile.NamedTemporaryFile('w+', delete=False) as tmp:
+        tmp.write(content)
+        tmp_path = tmp.name
+
+    result = read_fasta(tmp_path)
+    os.remove(tmp_path)
+    assert result == "ACGTTGCA"
+
+def test_read_fasta_non_dna_lines():
+    content = ">description\n123\nACGT\n!!!\nTGCA\n"
+    with tempfile.NamedTemporaryFile('w+', delete=False) as tmp:
+        tmp.write(content)
+        tmp_path = tmp.name
+
+    result = read_fasta(tmp_path)
+    os.remove(tmp_path)
+    assert result == "ACGTTGCA"
+
 
 #Testing of the kmer extraction function
 
@@ -66,6 +86,13 @@ def test_extract_kmers_overlap():
     result = extract_kmers(sequence, k)
     assert result == expected
 
+def test_extract_kmers_empty_sequence():
+    assert extract_kmers("", 3) == {}
+
+def test_extract_kmers_k_equals_len():
+    sequence = "ACGT"
+    assert extract_kmers(sequence, 4) == {}
+
 
 #Testing of the frequency counting function
 
@@ -73,6 +100,25 @@ def test_count_frequencies_empty_input():
     result = count_frequencies({})
     assert result == {}
 
+def test_count_frequencies_balanced_following():
+    input_data = {
+        "AC": ["G", "T", "G", "T"]
+    }
+    expected = {
+        "AC": (4, {"G": 2, "T": 2})
+    }
+    assert count_frequencies(input_data) == expected
+
+def test_count_frequencies_shared_following():
+    input_data = {
+        "AC": ["T"],
+        "GT": ["T"]
+    }
+    expected = {
+        "AC": (1, {"T": 1}),
+        "GT": (1, {"T": 1})
+    }
+    assert count_frequencies(input_data) == expected
 
 def test_count_kmer_frequencies_typical():
     kmer_contexts = {
@@ -97,6 +143,23 @@ def test_count_frequencies_single_kmer():
 
 
 # test output function
+
+def test_write_output_sorting(tmp_path):
+    kmer_data = {
+        "GT": (1, {"A": 1}),
+        "AC": (2, {"T": 2})
+    }
+    expected = [
+        'AC: 2, frequency of next character: {T: 2}\n',
+        'GT: 1, frequency of next character: {A: 1}\n'
+    ]
+
+    output_file = tmp_path / "sorted_output.txt"
+    write_output(kmer_data, str(output_file))
+
+    with open(output_file) as f:
+        assert f.readlines() == expected
+
 
 def test_write_output(tmp_path):
     # Setup data

@@ -21,7 +21,7 @@ def read_fasta(filename: str):
             # Remove leading and trailing whitespace
             line = line.strip()
             # check if empty line or non-DNA character line
-            if not line or not (line.startswith('A') or line.startswith('C') or line.startswith('G') or line.startswith('T')):
+            if not line or not (line.upper().startswith('A') or line.upper().startswith('C') or line.upper().startswith('G') or line.upper().startswith('T')):
                 continue  # Skip the line if it is, append the line to the list otherwise
             dna_sequence.append(line.upper())
     return ''.join(dna_sequence) #string
