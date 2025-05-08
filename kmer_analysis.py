@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
 import sys
-from collections import defaultdict
 from typing import Dict, List, Tuple
 
 def read_fasta(filename: str):
@@ -16,12 +15,16 @@ def read_fasta(filename: str):
 
 
 def extract_kmers(sequence: str, k: int):
-    kmers = defaultdict(list)
+    kmers = {}
     for i in range(len(sequence) - k):
         kmer = sequence[i:i + k]
         next_char = sequence[i + k]
-        kmers[kmer].append(next_char)
-    return kmers # return format: Dict[str, List[str]]
+        if kmer in kmers:
+            kmers[kmer].append(next_char)
+        else:
+            kmers[kmer] = [next_char]
+    return kmers  # return format: Dict[str, List[str]]
+
 
 def count_frequencies(kmer_contexts: Dict[str, List[str]]):
     result = {}
@@ -64,7 +67,7 @@ def main():
         print("Error: k must be an integer greater than 0")
         sys.exit(1)
 
-    
+
     sequence = read_fasta(input_file)
     kmer_contexts = extract_kmers(sequence, k)
     kmer_counts = count_frequencies(kmer_contexts)
