@@ -10,7 +10,7 @@ def read_fasta(filename: str):
             if not line or line.startswith('>'):
                 continue  # Skip empty lines and headers
             dna_sequence.append(line.upper())
-    return ''.join(dna_sequence) #str
+    return ''.join(dna_sequence)
 
 
 def extract_kmers(sequence: str, k: int):
