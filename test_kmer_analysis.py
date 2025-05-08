@@ -60,8 +60,8 @@ def test_write_output(tmp_path):
         "TG": (1, {"A": 1})
     }
     expected_lines = {
-        "AT: 2, follows -> {'G': 2}\n",
-        "TG: 1, follows -> {'A': 1}\n"
+        'TG: 1, frequency of next character: {A: 1}\n',
+        'AT: 2, frequency of next character: {G: 2}\n'
     }
 
     # Run

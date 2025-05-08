@@ -38,8 +38,10 @@ def count_frequencies(kmer_contexts: Dict[str, List[str]]):
 
 def write_output(kmer_counts: Dict[str, Tuple[int, Dict[str, int]]], out_file: str):
     with open(out_file, 'w') as f:
-        for kmer, (total, follow_counts) in kmer_counts.items():
-            f.write(f"{kmer} {total} {' '.join([f'{char}:{count}' for char, count in follow_counts.items()])}\n")
+        for kmer in sorted(kmer_counts):
+            total, follow_dict = kmer_counts[kmer]
+            follow_str = ", ".join(f"{char}: {count}" for char, count in follow_dict.items())
+            f.write(f"{kmer}: {total}, frequency of next character: {{{follow_str}}}\n")
     return 0
 
 def main():
