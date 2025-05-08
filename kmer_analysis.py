@@ -1,5 +1,5 @@
 import sys
-from collections import defaultdict, Counter
+from collections import defaultdict
 from typing import Dict, List, Tuple
 
 def read_fasta(filename: str):
@@ -36,6 +36,12 @@ def count_kmer_frequencies(kmer_contexts: Dict[str, List[str]]):
     #print(result)
     return result  #return format: Dict[str, Tuple[int, Dict[str, int]]]
 
+def write_output(kmer_counts: Dict[str, Tuple[int, Dict[str, int]]], out_file: str):
+    with open(out_file, 'w') as f:
+        for kmer, (total, follow_counts) in kmer_counts.items():
+            f.write(f"{kmer} {total} {' '.join([f'{char}:{count}' for char, count in follow_counts.items()])}\n")
+    return 0
+
 def main():
     if len(sys.argv) != 4:
         print("How to use: python kmer_analysis.py <input_file> <output_file> <k>")
@@ -52,6 +58,8 @@ def main():
     sequence = read_fasta(input_file)
     kmer_contexts = extract_kmers(sequence, k)
     kmer_counts = count_kmer_frequencies(kmer_contexts)
+    write_output(kmer_counts, output_file)
+
 
 if __name__ == "__main__":
     main()

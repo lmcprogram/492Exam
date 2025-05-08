@@ -1,0 +1,7 @@
+AA 2 A:1 C:1
+AC 1 C:1
+CC 2 C:1 G:1
+CG 1 G:1
+GG 2 G:1 T:1
+GT 1 T:1
+TT 1 T:1
