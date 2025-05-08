@@ -1,0 +1,30 @@
+AAA: 1, frequency of next character: {C: 1}
+AAC: 1, frequency of next character: {C: 1}
+ACA: 8, frequency of next character: {C: 6, T: 1, G: 1}
+ACC: 2, frequency of next character: {C: 2}
+ACD: 1, frequency of next character: {S: 1}
+ACG: 1, frequency of next character: {T: 1}
+AGG: 1, frequency of next character: {G: 1}
+ATT: 1, frequency of next character: {T: 1}
+CAC: 6, frequency of next character: {A: 6}
+CAG: 1, frequency of next character: {G: 1}
+CAT: 1, frequency of next character: {T: 1}
+CCC: 3, frequency of next character: {G: 2, C: 1}
+CCG: 2, frequency of next character: {G: 1, T: 1}
+CDS: 1, frequency of next character: {A: 1}
+CGG: 1, frequency of next character: {G: 1}
+CGT: 1, frequency of next character: {A: 1}
+DSA: 1, frequency of next character: {C: 1}
+GAC: 1, frequency of next character: {C: 1}
+GGA: 1, frequency of next character: {C: 1}
+GGG: 3, frequency of next character: {T: 1, G: 1, A: 1}
+GGT: 1, frequency of next character: {T: 1}
+GTA: 2, frequency of next character: {C: 2}
+GTG: 1, frequency of next character: {T: 1}
+GTT: 1, frequency of next character: {T: 1}
+SAC: 1, frequency of next character: {A: 1}
+TAC: 3, frequency of next character: {G: 1, D: 1, A: 1}
+TGT: 2, frequency of next character: {G: 1, A: 1}
+TTA: 1, frequency of next character: {C: 1}
+TTG: 1, frequency of next character: {T: 1}
+TTT: 2, frequency of next character: {A: 1, G: 1}
