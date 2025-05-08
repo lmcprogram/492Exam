@@ -21,7 +21,7 @@ def extract_kmers(sequence: str, k: int):
         kmers[kmer].append(next_char)
     return kmers # return format: Dict[str, List[str]]
 
-def count_kmer_frequencies(kmer_contexts: Dict[str, List[str]]):
+def count_frequencies(kmer_contexts: Dict[str, List[str]]):
     result = {}
     for kmer, follows in kmer_contexts.items():
         total = len(follows)
@@ -57,7 +57,7 @@ def main():
 
     sequence = read_fasta(input_file)
     kmer_contexts = extract_kmers(sequence, k)
-    kmer_counts = count_kmer_frequencies(kmer_contexts)
+    kmer_counts = count_frequencies(kmer_contexts)
     write_output(kmer_counts, output_file)
 
 

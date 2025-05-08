@@ -3,7 +3,7 @@
 import tempfile
 import os
 import pytest
-from kmer_analysis import read_fasta, extract_kmers
+from kmer_analysis import read_fasta, extract_kmers, count_frequencies, write_output
 
 
 def test_read_fasta():
@@ -22,7 +22,7 @@ def test_read_fasta():
     # Verify
     assert sequence == "ACTGCGA"
 
-def test_extract_kmers_typical():
+def test_extract_kmers_normal_input():
     sequence = "ATGCGA"
     k = 2
     expected = {
@@ -33,3 +33,42 @@ def test_extract_kmers_typical():
     }
     result = extract_kmers(sequence, k)
     assert result == expected
+
+def test_extract_kmers_edge_too_short():
+    sequence = "AT"
+    k = 3
+    result = extract_kmers(sequence, k)
+    assert result == {}  # should have no k-mers if k > len(sequence)
+
+def test_count_kmer_frequencies_typical():
+    kmer_contexts = {
+        "AT": ["G", "G", "C"],
+        "TG": ["A"]
+    }
+    expected = {
+        "AT": (3, {"G": 2, "C": 1}),
+        "TG": (1, {"A": 1})
+    }
+    result = count_frequencies(kmer_contexts)
+    assert result == expected
+
+
+def test_write_output(tmp_path):
+    # Setup data
+    kmer_data = {
+        "AT": (2, {"G": 2}),
+        "TG": (1, {"A": 1})
+    }
+    expected_lines = {
+        "AT: 2, follows -> {'G': 2}\n",
+        "TG: 1, follows -> {'A': 1}\n"
+    }
+
+    # Run
+    output_file = tmp_path / "output.txt"
+    write_output(kmer_data, str(output_file))
+
+    # Verify
+    with open(output_file, 'r') as f:
+        lines = set(f.readlines())
+        assert lines == expected_lines
